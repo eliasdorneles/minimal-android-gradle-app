@@ -14,3 +14,30 @@ android {
     compileSdkVersion 25
     buildToolsVersion "22.0.1"
 }
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+task buildAndroidSupport(type:Exec) {
+    // XXX: quick'n dity to use VOC from trunk in my machine
+    workingDir "$System.env.HOME/src/voc-dev/voc"
+    commandLine 'ant android'.split()
+}
+
+task copyAndroidSupport(type:Exec, dependsOn: buildAndroidSupport) {
+    commandLine "cp $System.env.HOME/src/voc-dev/voc/dist/android/libs/python-android-support.jar libs/".split()
+}
+
+task vocCompile(type:Exec) {
+    commandLine 'voc -v app.py -o libs -n org.eliasdorneles'.split()
+}
+
+task vocJar(type:Exec, dependsOn: vocCompile) {
+    workingDir 'libs'
+    commandLine 'jar cvf python-app.jar org/eliasdorneles'.split()
+}
+
+task runApp(type:Exec) {
+    commandLine 'adb shell am start -n org.eliasdorneles/android.PythonActivity'.split()
+}
