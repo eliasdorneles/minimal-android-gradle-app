@@ -6,7 +6,6 @@ import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.Button;
 import android.graphics.Color;
-import org.eliasdorneles.app.MainActivity;
 
 
 public class PythonActivity extends Activity {
@@ -68,6 +67,7 @@ public class PythonActivity extends Activity {
                 throw new org.python.exceptions.RuntimeError(message);
             }
         }
+        this.invoke_app_method("onCreate", null, null);
     }
 
     /**
@@ -78,12 +78,12 @@ public class PythonActivity extends Activity {
                 org.python.Object [] args,
                 java.util.Map<java.lang.String, org.python.Object> kwargs
             ) {
+        Log.d("Python", "Invoking " + method_name + " method on Python listener.");
         if (_listener == null) {
             Log.e("Python", "Can't perform " + method_name +
                 ": My Gradle App didn't configure a listener at creation.");
         } else {
             try {
-                Log.i("Python", "Activity " + method_name);
                 org.python.Object method = _listener.__getattribute_null(method_name);
                 if (method != null) {
                     ((org.python.Callable) method).invoke(args, kwargs);
