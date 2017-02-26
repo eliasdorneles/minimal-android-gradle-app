@@ -6,9 +6,10 @@ import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.Button;
 import android.graphics.Color;
+import android.support.v7.app.AppCompatActivity;
 
 
-public class PythonActivity extends Activity {
+public class PythonActivity extends AppCompatActivity {
     static android.app.Activity instance;
     static org.python.Object _listener;
 
